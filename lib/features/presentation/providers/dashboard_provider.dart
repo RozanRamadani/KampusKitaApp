@@ -4,10 +4,10 @@ import '../../data/repositories/dashboard_repository.dart';
 
 final dashboardRepositoryProvider = Provider<DashboardRepository>((ref) {
   return DashboardRepository();
-});
+}); // Provider
 
-/// Menggunakan FutureProvider untuk async data
-final dashboardDataProvider = FutureProvider<DashboardData>((ref) async {
+/// Menggunakan FutureProvider.autoDispose untuk selalu fetch data terbaru
+final dashboardDataProvider = FutureProvider.autoDispose<DashboardData>((ref) async {
   final repository = ref.watch(dashboardRepositoryProvider);
   return repository.getDashboardData();
 });
@@ -50,19 +50,18 @@ class DashboardNotifier extends StateNotifier<AsyncValue<DashboardData>> {
   }
 }
 
-/// Dashboard Notifier Provider
-/// Provider untuk DashboardNotifier
+/// Dashboard Notifier Provider dengan autoDispose
 final dashboardNotifierProvider =
-    StateNotifierProvider<DashboardNotifier, AsyncValue<DashboardData>>((ref) {
+    StateNotifierProvider.autoDispose<DashboardNotifier, AsyncValue<DashboardData>>((ref) {
   final repository = ref.watch(dashboardRepositoryProvider);
   return DashboardNotifier(repository);
 });
 
 /// Selected Stat Provider
-/// Provider untuk stat yang dipilih (contoh state sederhana)
 final selectedStatIndexProvider = StateProvider<int>((ref) => 0);
 
 /// Theme Mode Provider
-/// Provider untuk dark/light mode
-final themeModeProvider = StateProvider<bool>((ref) => false);
-// false = light, true = dark
+final themeModeProvider = StateProvider<bool>((ref) {
+  return false;
+  // false = light, true = dark
+});
