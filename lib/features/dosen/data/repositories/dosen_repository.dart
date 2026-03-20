@@ -1,31 +1,39 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import '../models/dosen_model.dart';
 
 class DosenRepository {
-  /// Mendapatkan daftar dosen
-  Future<List<DosenModel>> getDosenList() async {
-    // Simulasi network delay
-    await Future.delayed(const Duration(seconds: 1));
+  final Dio _dio = Dio();
 
-    // Data dummy dosen
-    return [
-      DosenModel(
-        nama: 'Anank Prasetyo',
-        nip: '123456789',
-        email: 'anank.prasetyo@example.com',
-        jurusan: 'Teknik Informatika',
-      ),
-      DosenModel(
-        nama: 'Rachman Sinatriya',
-        nip: '987654321',
-        email: 'rachman.sinatriya@example.com',
-        jurusan: 'Teknik Informatika',
-      ),
-      DosenModel(
-        nama: 'Alfian Sukma',
-        nip: '456789123',
-        email: 'alfian.sukma@example.com',
-        jurusan: 'Teknik Informatika',
-      ),
-    ];
+  /// Mendapatkan daftar dosen menggunakan HTTP
+  Future<List<DosenModel>> getDosenListHttp() async {
+    final response = await http.get(
+      Uri.parse('https://jsonplaceholder.typicode.com/users'),
+      headers: {'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => DosenModel.fromJson(json)).toList();
+    } else {
+      throw Exception('Gagal memuat data dosen: ${response.statusCode}');
+    }
+  }
+
+  /// Mendapatkan daftar dosen menggunakan Dio (Tugas No 7)
+  Future<List<DosenModel>> getDosenList() async {
+    try {
+      final response = await _dio.get('https://jsonplaceholder.typicode.com/users');
+      
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => DosenModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Gagal memuat data dosen: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Gagal memuat data dosen');
+    }
   }
 }

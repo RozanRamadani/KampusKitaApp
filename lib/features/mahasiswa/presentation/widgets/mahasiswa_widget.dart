@@ -37,7 +37,12 @@ class MahasiswaCard extends StatelessWidget {
                 gradient: LinearGradient(colors: gradientColors),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.person, color: Colors.white),
+              child: Center(
+                child: Text(
+                  mahasiswa.name.isNotEmpty ? mahasiswa.name.substring(0, 1).toUpperCase() : '?',
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -45,11 +50,18 @@ class MahasiswaCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    mahasiswa.nama,
+                    mahasiswa.name,
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Text('NIM: ${mahasiswa.nim}', style: TextStyle(color: Colors.grey[600])),
-                  Text(mahasiswa.email, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                  Text('ID: ${mahasiswa.id}', style: TextStyle(color: Colors.grey[600])),
+                  Text(
+                    mahasiswa.email,
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
@@ -59,9 +71,9 @@ class MahasiswaCard extends StatelessWidget {
                 color: gradientColors[0].withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
-                mahasiswa.angkatan,
-                style: TextStyle(color: gradientColors[0], fontWeight: FontWeight.bold, fontSize: 12),
+              child: const Text(
+                'Comment',
+                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 10),
               ),
             ),
           ],

@@ -1,22 +1,31 @@
 class MahasiswaAktifModel {
-  final String nama;
-  final String nim;
-  final String status;
-  final String semester;
+  final int userId;
+  final int id;
+  final String title;
+  final String body;
 
   MahasiswaAktifModel({
-    required this.nama,
-    required this.nim,
-    required this.status,
-    required this.semester,
+    required this.userId,
+    required this.id,
+    required this.title,
+    required this.body,
   });
 
   factory MahasiswaAktifModel.fromJson(Map<String, dynamic> json) {
     return MahasiswaAktifModel(
-      nama: json['nama'] ?? '',
-      nim: json['nim'] ?? '',
-      status: json['status'] ?? '',
-      semester: json['semester'] ?? '',
+      userId: json['userId'] ?? 0,
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      body: json['body'] ?? '',
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'id': id,
+      'title': title,
+      'body': body,
+    };
   }
 }
